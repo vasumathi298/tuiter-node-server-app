@@ -15,16 +15,7 @@ app.use(
       methods: ["GET", "POST","PUT"]
     })
    );
-   app.use(
-    session({
-      secret: 'your-secret-key',
-      resave: false,
-      saveUninitialized: false,
-      store: new session.MemoryStore(),
-    })
-  );
-
-  app.use(function (req, res, next) {
+   app.use(function (req, res, next) {
     res.header(
         "Access-Control-Allow-Origin",
         "https://a5--genuine-fudge-ca1abe.netlify.app"
@@ -38,6 +29,14 @@ app.use(
     next();
 });
 
+app.use(
+    session({
+      secret: 'your-secret-key',
+      resave: false,
+      saveUninitialized: false,
+      store: new session.MemoryStore(),
+    })
+  );
 TuitsController(app);
 HelloController(app);
 UserController(app);
