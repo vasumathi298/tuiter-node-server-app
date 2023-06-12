@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(
     cors({
       credentials: true,
-      origin: "http://localhost:3000",
+      origin: "https://a5--genuine-fudge-ca1abe.netlify.app",
       methods: ["GET", "POST","PUT"]
     })
    );
