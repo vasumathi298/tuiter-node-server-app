@@ -12,7 +12,7 @@ app.use(
     cors({
       credentials: true,
       origin: "https://a5--genuine-fudge-ca1abe.netlify.app",
-      methods: ["GET", "POST","PUT"]
+      methods: ["GET", "POST","PUT","DELETE"]
     })
    );
    app.use(function (req, res, next) {
