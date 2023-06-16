@@ -8,38 +8,32 @@ const UserController = (app) => {
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
   }
-  const createUser = (req, res) => {
-    const newUser = req.body;
-    if( req.body == null)
-        console.log("is null");
-    newUser._id = (new Date()).getTime() + '';
-    users.push(newUser);
+  const createUser = async (req, res) => {
+    const newUser = await usersDao.createUser(req.body);
     res.json(newUser);
   }
-  const updateUser = (req, res) => {
+  const updateUser =async (req, res) => {
     const userId = req.params['uid'];
-    const updates = req.body;
-    users = users.map((usr) =>
-      usr._id === userId ?
-        {...usr, ...updates} :
-        usr
-    );
-    res.sendStatus(200);
+    const status = await usersDao.updateUser(userId, req.body);
+    const user = await usersDao.findUserById(userId);
+    req.session["currentUser"] = user;
+    res.json(status);
+  
    }
    
    
-  const deleteUser = (req, res) => {
+  const deleteUser = async (req, res) => {
     const userId = req.params['uid'];
-    users = users.filter(usr => usr._id !== userId);
-    res.sendStatus(200);
+    const status = await usersDao.deleteUser(userId);
+    res.sendStatus(status);
   }
   
   
   
-const findUserById = (req, res) => {
+const findUserById = async (req, res) => {
     const userId = req.params.uid;
-    const user = users
-      .find(u => u._id === userId);
+    const user = await usersDao.findUserById(userId);
+
     res.json(user);
   }
 const findUsers = (req, res) => {
