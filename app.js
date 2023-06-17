@@ -15,14 +15,14 @@ app.use(express.json());
 app.use(
     cors({
       credentials: true,
-      origin: "https://a5--genuine-fudge-ca1abe.netlify.app",
+      origin: "https://a6--genuine-fudge-ca1abe.netlify.app/",
       methods: ["GET", "POST","PUT","DELETE"]
     })
    );
    app.use(function (req, res, next) {
     res.header(
         "Access-Control-Allow-Origin",
-        "https://a5--genuine-fudge-ca1abe.netlify.app"
+        "https://a6--genuine-fudge-ca1abe.netlify.app/"
     );
     res.header(
         "Access-Control-Allow-Headers",
