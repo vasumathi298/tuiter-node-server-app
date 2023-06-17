@@ -1,5 +1,4 @@
 import * as usersDao from "./users-dao.js";
-var currentUserVar;
 
 const AuthController = (app) => {
    
@@ -10,7 +9,7 @@ const AuthController = (app) => {
             return;
         }
         const newUser = await usersDao.createUser(req.body);
-        currentUserVar = newUser;
+        req.session["currentUser"]  = newUser;
         res.json(newUser);
 
     };
@@ -20,7 +19,7 @@ const AuthController = (app) => {
         const password = req.body.password;
         const user = await usersDao.findUserByCredentials(username, password);
         if (user) {
-            currentUserVar = user;
+            req.session["currentUser"]  = user;
             res.json(user); // display the user
         } else {
             res.sendStatus(404);
@@ -29,7 +28,7 @@ const AuthController = (app) => {
     // if a user has already logged in, we can retrieve the current user by using the profile
     // API as shown below
     const profile = (req, res) => {
-      const currentUser = currentUserVar;
+      const currentUser = req.session["currentUser"] ;
       if (!currentUser) {
           res.sendStatus(404);
           return;
@@ -43,14 +42,14 @@ const AuthController = (app) => {
     };
 
     const update = async (req, res) => {
-      const currentUser = currentUserVar;
+      const currentUser = req.session["currentUser"] ;
       const user = req.body;
       console.log("inside update currentUser ", currentUser);
       if (!currentUser) {
           res.sendStatus(404);
       } else {
           const updatedUser =await usersDao.updateUser(currentUser._id, user);
-          currentUserVar = updatedUser;
+          req.session["currentUser"]  = updatedUser;
           res.json(updatedUser);
       }
   };
