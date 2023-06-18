@@ -3,22 +3,22 @@ var currentUserVar;
 
 const AuthController = (app) => {
    
-    const register = async(req, res) => {
-        const user = await usersDao.findUserByUsername(req.body.username);
+    const register = (req, res) => {
+        const handle = req.body.handle;
+        const user = usersDao.findUserByHandle(handle); // user's handle is unique
         if (user) { // if user exists already
             res.sendStatus(409);
             return;
         }
-        const newUser = await usersDao.createUser(req.body);
+        const newUser = usersDao.createUser(req.body); // new user's info is in
         currentUserVar = newUser;
         res.json(newUser);
-
     };
     
-    const login = async(req, res) => { // given username and password
+    const login = (req, res) => { // given username and password
         const username = req.body.username;
         const password = req.body.password;
-        const user = await usersDao.findUserByCredentials(username, password);
+        const user = usersDao.findUserByCredentials(username, password);
         if (user) {
             currentUserVar = user;
             res.json(user); // display the user
@@ -42,19 +42,18 @@ const AuthController = (app) => {
         res.sendStatus(200);
     };
 
-    const update = async (req, res) => {
+    const update = (req, res) => {
       const currentUser = currentUserVar;
       const user = req.body;
       console.log("inside update currentUser ", currentUser);
       if (!currentUser) {
           res.sendStatus(404);
       } else {
-          const updatedUser =await usersDao.updateUser(currentUser._id, user);
+          const updatedUser = usersDao.updateUser(currentUser._id, user);
           currentUserVar = updatedUser;
           res.json(updatedUser);
       }
   };
-
 
     app.post("/api/users/register", register);
     app.post("/api/users/login",    login);
