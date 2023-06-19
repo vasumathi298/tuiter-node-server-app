@@ -10,7 +10,6 @@ const AuthController = (app) => {
         }
         const newUser = await usersDao.createUser(req.body);
         req.session["currentUser"]  = user;
-        req.session.save();
         res.json(newUser);
 
     };
@@ -21,7 +20,6 @@ const AuthController = (app) => {
         const user = await usersDao.findUserByCredentials(username, password);
         if (user) {
             req.session["currentUser"]  = user;
-            req.session.save();
             res.json(user); // display the user
         } else {
             res.sendStatus(404);
@@ -35,7 +33,6 @@ const AuthController = (app) => {
           res.sendStatus(404);
           return;
       }
-      req.session.save();
       res.json(currentUser);
   };
     // logout users by destroying the session
@@ -53,7 +50,6 @@ const AuthController = (app) => {
       } else {
           const updatedUser =await usersDao.updateUser(currentUser._id, user);
           req.session["currentUser"]  = updatedUser;
-          req.session.save();
           res.json(updatedUser);
       }
   };
