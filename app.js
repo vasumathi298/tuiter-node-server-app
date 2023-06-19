@@ -16,7 +16,7 @@ app.use(
     cors({
       credentials: true,
       origin: "https://a6--genuine-fudge-ca1abe.netlify.app",
-      methods: ["GET", "POST","PUT","DELETE"]
+      methods: ["GET", "POST","PUT","DELETE"],
     })
    );
    app.use(function (req, res, next) {
@@ -40,6 +40,11 @@ app.use(
       resave: false,
       saveUninitialized: false,
       store: new session.MemoryStore(),
+      cookie: {
+            secure:true,
+            httpOnly:true,
+            sameSite:'none'
+      }
     })
   );
 TuitsController(app);
